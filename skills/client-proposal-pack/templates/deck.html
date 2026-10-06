@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{CLIENT}} · Website proposal</title>
+<!--
+  16:9 proposal deck. One <section class="slide"> per slide. Sizes are in container units
+  (cqw), so screen and print render identically. Print with:
+    node scripts/to-pdf.mjs deck.html "{{FILE_NAME}}.pdf"
+  Delete any optional slide the brief doesn't need. Replace every {{...}}.
+-->
+<style>
+  :root {
+    /* Client brand. Pull from their logo or site. */
+    --brand: #1f3a5f;
+    --accent: #c8553d;
+    --ink: #141414;
+    --paper: #f7f4ee;
+    --muted: #6b6b6b;
+    --display: Georgia, "Times New Roman", serif;
+    --text: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { background: #2a2a2a; scroll-snap-type: y mandatory; }
+  body { font-family: var(--text); color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .slide {
+    container-type: inline-size;
+    width: min(100vw, 177.78vh);
+    aspect-ratio: 16 / 9;
+    margin: 0 auto 2vh;
+    padding: 5cqw 6cqw;
+    background: var(--paper);
+    position: relative;
+    overflow: hidden;
+    scroll-snap-align: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .slide.dark { background: var(--brand); color: var(--paper); }
+  .slide.dark .muted { color: color-mix(in srgb, var(--paper) 70%, transparent); }
+
+  /* Section marker: number, centred dot, label. */
+  .marker { display: flex; align-items: center; gap: 1cqw; font-size: 1.1cqw; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .marker::before { content: attr(data-n); font-variant-numeric: tabular-nums; }
+  .marker span { width: .45cqw; height: .45cqw; border-radius: 50%; background: currentColor; }
+  .slide.dark .marker { color: color-mix(in srgb, var(--paper) 70%, transparent); }
+
+  h1 { font-family: var(--display); font-weight: 400; font-size: 6cqw; line-height: 1.02; letter-spacing: -.01em; }
+  h2 { font-family: var(--display); font-weight: 400; font-size: 3.6cqw; line-height: 1.08; margin-top: 1.6cqw; max-width: 70%; }
+  p, li { font-size: 1.55cqw; line-height: 1.5; }
+  .muted { color: var(--muted); }
+  .grow { flex: 1; }
+  .row { display: flex; gap: 3cqw; }
+  .row > * { flex: 1; }
+  a { color: inherit; text-underline-offset: .25em; }
+
+  /* Cover */
+  .logo { height: 4cqw; width: auto; object-fit: contain; align-self: flex-start; }
+  .chip { align-self: flex-start;font-size: 1.3cqw; padding: .5cqw 1.2cqw; border: 1px solid currentColor; border-radius: 99px; }
+  .meta { display: flex; justify-content: space-between; font-size: 1.2cqw; }
+
+  /* Page by section: cropped screenshots, each in its own frame. */
+  .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2cqw; margin-top: 3cqw; }
+  .shot { background: #fff; border-radius: .8cqw; overflow: hidden; box-shadow: 0 .2cqw .6cqw rgba(0,0,0,.08), 0 1.5cqw 3cqw rgba(0,0,0,.08); }
+  .shot img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
+  .shot p { font-size: 1.2cqw; padding: .9cqw 1.1cqw; }
+  .shot b { font-variant-numeric: tabular-nums; margin-right: .6cqw; }
+
+  /* Scope */
+  .check { padding: 0; margin-top: .8cqw; }
+  .check li { list-style: none; padding-left: 2.2cqw; position: relative; margin: .5cqw 0; }
+  .check li::before { content: ""; position: absolute; left: 0; top: .7cqw; width: 1cqw; height: .55cqw; border-left: .2cqw solid var(--accent); border-bottom: .2cqw solid var(--accent); transform: rotate(-45deg); }
+  .cross li::before { content: "×"; color: var(--muted); border: 0; transform: none; top: 0; font-size: 1.6cqw; line-height: 1.4; }
+
+  /* Timeline */
+  .phases { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5cqw; margin-top: 3cqw; }
+  .phase { border-top: .25cqw solid var(--accent); padding-top: 1.2cqw; }
+  .phase strong { display: block; font-size: 1.2cqw; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+  /* Investment */
+  .tiers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5cqw; margin-top: 3cqw; }
+  .tier { border: 1px solid color-mix(in srgb, currentColor 25%, transparent); border-radius: 1cqw; padding: 2.4cqw; }
+  .tier.pick { border-color: var(--accent); box-shadow: 0 0 0 .15cqw var(--accent); }
+  .tier h3 { font-size: 1.4cqw; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
+  .was { text-decoration: line-through; color: var(--muted); font-size: 1.8cqw; margin-top: 1.2cqw; }
+  .price { font-family: var(--display); font-size: 4.6cqw; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .tier ul { margin-top: 1.2cqw; padding-left: 1.4cqw; }
+  .terms { font-size: 1.2cqw; margin-top: 2cqw; }
+
+  @page { size: 13.333in 7.5in; margin: 0; }
+  @media print {
+    html { background: none; }
+    .slide { width: 13.333in; height: 7.5in; aspect-ratio: auto; margin: 0; break-after: page; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1 · Cover -->
+<section class="slide dark">
+  <img class="logo" src="{{CLIENT_LOGO}}" alt="{{CLIENT}}">
+  <div class="grow"></div>
+  <span class="chip">{{SCOPE_ONE_LINE}}</span>
+  <h1 style="margin-top:2cqw">Website proposal<br>for {{CLIENT}}</h1>
+  <div class="grow"></div>
+  <div class="meta"><span>Prepared by {{STUDIO}}</span><span>{{MONTH YEAR}}</span></div>
+</section>
+
+<!-- 2 · Brief: the client's words, mapped to what the site will do -->
+<section class="slide">
+  <div class="marker" data-n="01"><span></span>The brief</div>
+  <h2>{{One sentence that restates their goal better than they did.}}</h2>
+  <div class="grow"></div>
+  <div class="row">
+    <div><p class="muted">You said</p><p>“{{quote from the brief}}”</p></div>
+    <div><p class="muted">So the site will</p><p>{{what the site does about it}}</p></div>
+  </div>
+</section>
+
+<!-- 3 · Optional: audience, or design direction / moodboard -->
+
+<!-- 4 · Experience: the journey down the page, one job per section -->
+<section class="slide">
+  <div class="marker" data-n="02"><span></span>The experience</div>
+  <h2>{{How a visitor moves from first impression to enquiry.}}</h2>
+  <div class="phases">
+    <div class="phase"><strong>Arrive</strong><p>{{...}}</p></div>
+    <div class="phase"><strong>Believe</strong><p>{{...}}</p></div>
+    <div class="phase"><strong>Explore</strong><p>{{...}}</p></div>
+    <div class="phase"><strong>Act</strong><p>{{...}}</p></div>
+  </div>
+</section>
+
+<!-- 5 · Page by section: real screenshots or mockups, cropped, one per frame -->
+<section class="slide">
+  <div class="marker" data-n="03"><span></span>Page by section</div>
+  <div class="shots">
+    <figure class="shot"><img src="{{shots/01-hero.png}}" alt=""><p><b>01</b>{{Hero: what it does}}</p></figure>
+    <figure class="shot"><img src="{{shots/02-....png}}" alt=""><p><b>02</b>{{...}}</p></figure>
+    <figure class="shot"><img src="{{shots/03-....png}}" alt=""><p><b>03</b>{{...}}</p></figure>
+  </div>
+</section>
+
+<!-- 6 · Optional: references they like (links must work) -->
+
+<!-- 7 · Scope -->
+<section class="slide">
+  <div class="marker" data-n="04"><span></span>What you get</div>
+  <div class="row" style="margin-top:3cqw">
+    <div><p class="muted">Included</p><ul class="check"><li>{{...}}</li><li>{{...}}</li></ul></div>
+    <div><p class="muted">Not included</p><ul class="check cross"><li>{{...}}</li></ul></div>
+  </div>
+</section>
+
+<!-- 8 · Timeline -->
+<section class="slide">
+  <div class="marker" data-n="05"><span></span>Timeline</div>
+  <h2>{{N}} weeks from kickoff to launch.</h2>
+  <div class="phases">
+    <div class="phase"><strong>Week 1</strong><p>{{Discovery and direction}}</p></div>
+    <div class="phase"><strong>Weeks 2 to 3</strong><p>{{Design}}</p></div>
+    <div class="phase"><strong>Weeks 4 to 5</strong><p>{{Build}}</p></div>
+    <div class="phase"><strong>Week 6</strong><p>{{Test and launch}}</p></div>
+  </div>
+</section>
+
+<!-- 9 · Investment. Show only what was agreed: one price, or two tiers; a list price struck
+     through only if it is genuinely the standard rate; payment line only if the user wants it. -->
+<section class="slide dark">
+  <div class="marker" data-n="06"><span></span>Investment</div>
+  <div class="tiers">
+    <div class="tier">
+      <h3>{{Essential}}</h3>
+      <p class="was">{{CUR}} {{LIST_PRICE}}</p>
+      <p class="price">{{CUR}} {{PRICE_A}}</p>
+      <ul><li>{{difference that matters}}</li></ul>
+    </div>
+    <div class="tier pick">
+      <h3>{{Complete}}</h3>
+      <p class="was">{{CUR}} {{LIST_PRICE_B}}</p>
+      <p class="price">{{CUR}} {{PRICE_B}}</p>
+      <ul><li>{{what the bigger tier adds}}</li></ul>
+    </div>
+  </div>
+  <p class="terms muted">{{Payment line, e.g. "50% to start, 50% before launch · 5% off the build fee when paid in full upfront"}} · {{Tax line, e.g. "+18% GST"}} · {{Excludes domain and third-party fees.}}</p>
+</section>
+
+<!-- 10 · Close -->
+<section class="slide dark">
+  <div class="grow"></div>
+  <h1>{{Closing line.}}</h1>
+  <div class="grow"></div>
+  <div class="meta"><span>{{STUDIO}} · <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></span><span><a href="{{STUDIO_URL}}">{{STUDIO_URL_SHORT}}</a></span></div>
+</section>
+
+</body>
+</html>

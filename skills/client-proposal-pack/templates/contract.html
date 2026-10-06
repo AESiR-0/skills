@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{CLIENT}} x {{STUDIO}} · Website agreement</title>
+<!--
+  A4 agreement. Clause numbering is automatic (CSS counters). Delete clauses that do not
+  apply, keep the order. Every figure must match the deck. Print with:
+    node scripts/to-pdf.mjs contract.html "{{YYYY MM DD}} {{CLIENT}} x {{STUDIO}} Agreement.pdf"
+  This is a starting template, not legal advice. Have it reviewed for your jurisdiction.
+-->
+<style>
+  :root { --brand: #1f3a5f; --ink: #1a1a1a; --muted: #666; --rule: #ddd; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 10.5pt/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); counter-reset: clause; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  main { max-width: 170mm; margin: 0 auto; padding: 20mm 0; }
+  @page { size: A4; margin: 18mm 20mm; }
+  @media print { main { padding: 0; max-width: none; } }
+
+  header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--brand); padding-bottom: 6mm; margin-bottom: 8mm; }
+  header img { height: 12mm; }
+  h1 { font: 600 20pt/1.2 Georgia, serif; margin: 0 0 2mm; color: var(--brand); }
+  h2 { font-size: 11.5pt; margin: 8mm 0 2mm; color: var(--brand); break-after: avoid; }
+  section { counter-increment: clause; counter-reset: sub; break-inside: avoid-page; }
+  section > h2::before { content: counter(clause) ". "; }
+  section > ol { counter-reset: sub; list-style: none; padding: 0; margin: 0; }
+  section > ol > li { counter-increment: sub; padding-left: 9mm; position: relative; margin: 1.5mm 0; }
+  section > ol > li::before { content: counter(clause) "." counter(sub); position: absolute; left: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
+  table { width: 100%; border-collapse: collapse; margin: 3mm 0; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; vertical-align: top; padding: 2mm 3mm; border-bottom: 1px solid var(--rule); }
+  th { width: 38%; font-weight: 600; color: var(--muted); }
+  .box { border: 1px solid var(--brand); border-radius: 2mm; padding: 4mm 5mm; margin: 4mm 0; break-inside: avoid; }
+  .muted { color: var(--muted); }
+  .tick { display: inline-block; width: 4mm; height: 4mm; border: 1px solid var(--ink); margin-right: 2mm; vertical-align: -0.6mm; }
+  .sign { display: grid; grid-template-columns: 1fr 1fr; gap: 12mm; margin-top: 10mm; break-inside: avoid; }
+  .sign div { border-top: 1px solid var(--ink); padding-top: 2mm; min-height: 30mm; }
+  .page-break { break-before: page; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div>
+    <h1>Website Design, Development and Launch Agreement</h1>
+    <div class="muted">Prepared for {{CLIENT_LEGAL_NAME}} · Prepared by {{STUDIO_LEGAL_NAME}} · {{DATE}}</div>
+  </div>
+  <img src="{{CLIENT_LOGO}}" alt="">
+</header>
+
+<div class="box">
+  <strong>Key terms</strong>
+  <table>
+    <tr><th>Build fee</th><td>{{CUR}} {{FEE}} {{+ tax line}}</td></tr>
+    <tr><th>Paid in full upfront</th><td>{{CUR}} {{FEE_DISCOUNTED}} ({{N}}% off the build fee) · optional</td></tr>
+    <tr><th>Hosting and care</th><td>{{CUR}} {{MONTHLY}} / month, billed {{monthly | quarterly}} in advance · optional</td></tr>
+    <tr><th>Estimated delivery</th><td>{{N}} weeks from kickoff, subject to clause 4</td></tr>
+    <tr><th>Revisions</th><td>{{e.g. 2 design rounds + 1 build round}}</td></tr>
+    <tr><th>Post-launch support</th><td>{{N}} days</td></tr>
+  </table>
+</div>
+
+<section><h2>Parties</h2>
+  <p>This agreement is between <strong>{{CLIENT_LEGAL_NAME}}</strong>, {{client address}} ("Client"), and <strong>{{STUDIO_LEGAL_NAME}}</strong>, {{studio address}} ("Studio").</p>
+</section>
+
+<section><h2>Project objective</h2>
+  <p>{{One paragraph, matching the deck's brief slide.}}</p>
+</section>
+
+<section><h2>Scope</h2>
+  <ol>
+    <li><strong>Included.</strong> {{list, matching the deck's "What you get" exactly}}</li>
+    <li><strong>Client supplies.</strong> {{brand assets, copy, photography, access to accounts}}</li>
+    <li><strong>Not included.</strong> {{matching the deck; never list something the deck includes}}</li>
+    <li><strong>Third-party costs</strong> (domain, paid fonts, plugins, stock media, paid services) are billed at cost or paid directly by the Client.</li>
+  </ol>
+</section>
+
+<section><h2>Timeline and dependencies</h2>
+  <ol>
+    <li>The estimated timeline is {{N}} weeks from kickoff, in the phases set out in the proposal.</li>
+    <li>The timeline depends on the Client supplying content, feedback and approvals within {{3}} working days of a request. Delays on the Client's side move the delivery date by the same amount, without penalty to either party.</li>
+    <li>If the project is inactive on the Client's side for {{30}} days, the Studio may pause it and resume on a new schedule.</li>
+  </ol>
+</section>
+
+<section><h2>Revisions</h2>
+  <ol>
+    <li>A revision round is one consolidated list of feedback, sent at once.</li>
+    <li>Included: {{rounds}}. Minor changes (copy, colour, spacing) are part of a round. Major changes (new pages, new features, a change of direction after approval) are additional work under clause 8.</li>
+  </ol>
+</section>
+
+<section><h2>Fees and payment</h2>
+  <ol>
+    <li><strong>Standard:</strong> {{50}}% before kickoff and {{50}}% before handover.</li>
+    <li><strong>Paid in full:</strong> {{N}}% off the build fee when 100% is paid before kickoff. The discount applies to the build fee only.</li>
+    <li>Invoices are due within {{7}} days. Work may pause while an invoice is overdue.</li>
+    <li>Final files, source code and account handover take place after full payment.</li>
+  </ol>
+</section>
+
+<section><h2>Hosting and care (optional)</h2>
+  <ol>
+    <li>{{CUR}} {{MONTHLY}} per month, invoiced {{monthly | quarterly}} in advance, covering {{hosting, uptime monitoring, updates, minor edits up to N hours}}.</li>
+    <li>Either party may end it with {{30}} days' written notice. No lock-in.</li>
+  </ol>
+</section>
+
+<section><h2>Additional work</h2>
+  <p>Anything outside clause 3 is quoted separately and starts only after written approval (email is enough).</p>
+</section>
+
+<section><h2>Ownership</h2>
+  <ol>
+    <li>On full payment, the Client owns the project-specific design, content and code delivered under this agreement.</li>
+    <li>The Studio keeps ownership of its pre-existing tools, libraries and general know-how, and grants the Client a perpetual licence to use them as part of the delivered site.</li>
+    <li>The Studio may show the work in its portfolio after launch, unless the Client asks otherwise in writing.</li>
+  </ol>
+</section>
+
+<section><h2>Confidentiality and data</h2>
+  <p>Each party keeps the other's non-public information confidential. Access credentials shared for the project are used only for the project and handed back or deleted at the end.</p>
+</section>
+
+<section><h2>Warranty, support and liability</h2>
+  <ol>
+    <li>The Studio fixes defects in its own work reported within {{N}} days of launch at no cost.</li>
+    <li>The Studio is not liable for third-party services, outages or content supplied by the Client.</li>
+    <li>Each party's total liability is limited to the fees paid under this agreement.</li>
+  </ol>
+</section>
+
+<section><h2>Ending the agreement</h2>
+  <p>Either party may end this agreement with written notice. The Client pays for work completed to that date, and receives the work paid for.</p>
+</section>
+
+<section><h2>General</h2>
+  <ol>
+    <li>This agreement is governed by the laws of {{jurisdiction}}, with courts at {{city}} having jurisdiction.</li>
+    <li>It is the entire agreement between the parties and may be signed electronically.</li>
+  </ol>
+</section>
+
+<div class="page-break"></div>
+<div class="box">
+  <strong>Commercial summary</strong>
+  <table>
+    <tr><th>Build fee</th><td>{{CUR}} {{FEE}}</td></tr>
+    <tr><th>Taxes</th><td>{{tax line}}</td></tr>
+    <tr><th>Hosting and care</th><td>{{CUR}} {{MONTHLY}} / month (optional)</td></tr>
+  </table>
+  <p><strong>Payment option chosen</strong> (tick one)</p>
+  <p><span class="tick"></span>Standard: {{50}}% before kickoff, {{50}}% before handover · {{CUR}} {{FEE}}</p>
+  <p><span class="tick"></span>Paid in full before kickoff · {{CUR}} {{FEE_DISCOUNTED}}</p>
+</div>
+
+<div class="sign">
+  <div>For the Client<br><span class="muted">Name, title, date</span></div>
+  <div>For the Studio<br><span class="muted">Name, title, date</span></div>
+</div>
+
+</main>
+</body>
+</html>
