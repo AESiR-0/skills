@@ -26,6 +26,8 @@ Done when: the user has named the options that go forward for each axis.
 
 ## Gate 2: switch
 
+**Options on more than one page?** Use the `review-window` skill instead: one window with a tab per page, which stays open and in place as the client moves through the site. The panel below is for a single page.
+
 Use `templates/option-switcher.js`. It's dependency-free and works in any stack.
 
 1. Copy it to the site's static folder (`public/option-switcher.js`), and load it as a **plain, non-deferred script in `<head>`** so saved picks apply before first paint (no flash):
